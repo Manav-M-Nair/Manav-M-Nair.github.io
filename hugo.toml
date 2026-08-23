@@ -10,7 +10,7 @@ title = "Manav M Nair"
 [params]
   avatarAltText = "avatar"
   avatarSize = "size-m"
-  avatarURL = "/images/website_pfp.jpg"
+  avatarURL = "static/images/website_pfp.jpg"
   description = "Every question — from the smallest atoms to the largest galaxies, must have a definable answer and I intend to find those answers..."
   footer = "Manav M Nair"
 
