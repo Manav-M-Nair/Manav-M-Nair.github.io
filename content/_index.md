@@ -7,7 +7,7 @@ title: "About me"
 * **5 year integrated BS-MS (Physics)** — *IISER Thiruvananthapuram* (2025 – Present)
   * Focus: Classical Mechanics, Electrodynamics, Optics, Thermodynamics
 
-* **Primary & Secondary Education** — *Toc-H Public School, vytilla* (2012 – 2024)
+* **Primary & Secondary Education** — *Toc-H Public School, Vyttila* (2012 – 2024)
 
 ---
 
