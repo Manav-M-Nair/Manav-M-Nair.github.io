@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>About me on Manav M Nair</title>
+		<link>http://localhost:1313/</link>
+		<description>Recent content in About me on Manav M Nair</description>
+		<generator>Hugo</generator>
+		<language>en</language>
+		
+		
+		
+		
+			<lastBuildDate>Sat, 22 Aug 2026 00:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>My Photography</title>
+				<link>http://localhost:1313/posts/photography/</link>
+				<pubDate>Sat, 22 Aug 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/photography/</guid>
+				<description>&lt;p&gt;Here are a few of my favorite shots:&lt;/p&gt;&#xA;&lt;style&gt;&#xA;    .masonry-gallery {&#xA;        column-count: 1;&#xA;        column-gap: 1.2rem;&#xA;        margin: 2rem 0;&#xA;    }&#xA;    @media (min-width: 600px) { .masonry-gallery { column-count: 2; } }&#xA;    @media (min-width: 900px) { .masonry-gallery { column-count: 3; } }&#xA;&#xA;     &#xA;    .masonry-item {&#xA;        break-inside: avoid;&#xA;        margin-bottom: 1.2rem;&#xA;        -webkit-column-break-inside: avoid;&#xA;        page-break-inside: avoid;&#xA;    }&#xA;&#xA;     &#xA;    .photo-card {&#xA;        position: relative;&#xA;        border-radius: 10px;&#xA;        overflow: hidden;&#xA;        cursor: pointer;&#xA;        background: #111;  &#xA;&#xA;         &#xA;        transform: translateZ(0);&#xA;        -webkit-transform: translateZ(0);&#xA;        will-change: transform;&#xA;&#xA;        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);&#xA;        transition: box-shadow 0.3s ease;&#xA;    }&#xA;&#xA;    .photo-card img {&#xA;        display: block;&#xA;        width: 100%;&#xA;        height: auto;&#xA;        margin: 0 !important;&#xA;        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);&#xA;        will-change: transform;&#xA;    }&#xA;&#xA;     &#xA;    .photo-card:hover {&#xA;        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);&#xA;    }&#xA;    .photo-card:hover img {&#xA;        transform: scale(1.06);&#xA;    }&#xA;&#xA;     &#xA;    .photo-description {&#xA;        position: absolute;&#xA;        bottom: 0;&#xA;        left: 0;&#xA;        width: 100%;&#xA;        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);&#xA;        color: #ffffff;&#xA;        padding: 35px 15px 15px 15px;&#xA;        box-sizing: border-box;&#xA;        font-family: sans-serif;&#xA;        font-size: 0.95rem;&#xA;        text-align: center;&#xA;        opacity: 0;&#xA;        transform: translateY(10px);&#xA;        transition: opacity 0.3s ease, transform 0.3s ease;&#xA;        pointer-events: none;&#xA;    }&#xA;&#xA;    .photo-card:hover .photo-description {&#xA;        opacity: 1;&#xA;        transform: translateY(0);&#xA;    }&#xA;&lt;/style&gt;&#xA;&lt;div class=&#34;masonry-gallery&#34;&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/images/my_cat.jpeg&#34; alt=&#34;I love cats!&#34;&gt;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title></title>
+				<link>http://localhost:1313/uploads/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/uploads/</guid>
+				<description>&lt;p&gt;Whenever I find a concept in Physics or Math particularly fascinating, I make notes of it in LaTeX. It’s a time-consuming habit, but it has proved to be a very effective way for me to learn. Unlike physical notebooks which have a tendency to get lost in space-time and are practically impossible to edit, LaTeX allows my notes to evolve alongside my understanding of the subject. I also feel genuine happiness about sharing these notes with others despite often being discouraged for my &amp;lsquo;communist&amp;rsquo; behavior that is &amp;ldquo;claimed to be&amp;rdquo; increasing the class-median, but I can&amp;rsquo;t help it: Physics and Mathematics are just too beautiful to be kept a secret.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>
