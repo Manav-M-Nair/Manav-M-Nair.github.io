@@ -1,0 +1,122 @@
+<style>
+    .masonry-gallery {
+        column-count: 1;
+        column-gap: 1.2rem;
+        margin: 2rem 0;
+    }
+    @media (min-width: 600px) { .masonry-gallery { column-count: 2; } }
+    @media (min-width: 900px) { .masonry-gallery { column-count: 3; } }
+
+    /* 1. OUTER WRAPPER: Strictly handles masonry flow. No animations allowed here. */
+    .masonry-item {
+        break-inside: avoid;
+        margin-bottom: 1.2rem;
+        -webkit-column-break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    /* 2. INNER WRAPPER: Handles the styling, hover state, and boundaries. */
+    .photo-card {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        background: #111; /* Prevents transparent flashes during rendering */
+
+        /* Forces this specific box into its own dedicated GPU layer */
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        will-change: transform;
+
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .photo-card img {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin: 0 !important;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform;
+    }
+
+    /* HOVER STATES */
+    .photo-card:hover {
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+    }
+    .photo-card:hover img {
+        transform: scale(1.06);
+    }
+
+    /* OVERLAY */
+    .photo-description {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+        color: #ffffff;
+        padding: 35px 15px 15px 15px;
+        box-sizing: border-box;
+        font-family: sans-serif;
+        font-size: 0.95rem;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        pointer-events: none;
+    }
+
+    .photo-card:hover .photo-description {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+
+<div class="masonry-gallery">
+    {{ .Inner }}
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const galleries = document.querySelectorAll('.masonry-gallery');
+
+        galleries.forEach(gallery => {
+            // 1. Physically rip images out of Hugo's hidden <p> wrappers
+            const images = gallery.querySelectorAll('img');
+            images.forEach(img => {
+                const parent = img.parentElement;
+                if (parent && parent.tagName === 'P') {
+                    parent.parentNode.insertBefore(img, parent);
+                }
+            });
+
+            // 2. Destroy any empty <p> tags left behind
+            gallery.querySelectorAll('p').forEach(p => {
+                if (p.innerHTML.trim() === '') p.remove();
+            });
+
+            // 3. Build the Double-Wrapper system
+            const updatedImages = gallery.querySelectorAll('img');
+            updatedImages.forEach(img => {
+                if (img.closest('.masonry-item')) return;
+
+                const outer = document.createElement('div');
+                outer.className = 'masonry-item';
+
+                const inner = document.createElement('div');
+                inner.className = 'photo-card';
+
+                const desc = document.createElement('div');
+                desc.className = 'photo-description';
+                desc.innerText = img.alt || "Photography";
+
+                img.parentNode.insertBefore(outer, img);
+                outer.appendChild(inner);
+                inner.appendChild(img);
+                inner.appendChild(desc);
+            });
+        });
+    });
+</script>

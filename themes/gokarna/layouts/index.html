@@ -1,0 +1,204 @@
+{{ define "main" }}
+<!-- Physics Background Canvas -->
+<canvas id="physics-canvas"></canvas>
+
+<!-- 1. Full Screen Initial View -->
+<div style="position: relative; z-index: 10; min-height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 8vh; box-sizing: border-box;">
+
+    <section class="home-about">
+        <div class="avatar">
+            {{ if .Site.Params.avatarURL }}
+            <img class="{{ .Site.Params.avatarSize | default "size-m" }}" src="{{ .Site.Params.avatarURL | relURL }}" alt="{{ .Site.Params.avatarAltText | default "avatar" }}">
+            {{ end }}
+        </div>
+
+        <h1>{{ .Site.Title }}</h1>
+
+        {{ with .Site.Params.description }}
+        <h2 style="font-size: 1.15rem; font-weight: normal; max-width: 650px; line-height: 1.6; margin: 0.5rem auto 0 auto; opacity: 0.9; min-height: 3.5rem;">
+            <span id="typewriter-quote" data-text="{{ . }}"></span><span class="typewriter-cursor">|</span>
+        </h2>
+        {{ end }}
+    </section>
+
+    {{ if isset .Site.Params "socialicons" }}
+    <div class="gk-social-icons">
+        <ul class="gk-social-icons-list">
+            {{ range .Site.Params.SocialIcons }}
+            <li class="gk-social-icon">
+                <a href="{{ .url }}" target="_blank" rel="{{ if .rel }}{{ .rel }} {{ end }}noopener noreferrer" aria-label="Learn more on {{ .name }}">
+                    <img class="svg-inject" src="{{ relURL "svg/icons/" }}{{ .name | lower }}.svg" alt="">
+                </a>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+    {{ end }}
+
+</div>
+
+<!-- 2. Scrollable Content Section -->
+{{ if (or (and (fileExists "content/_index.md") .Content) (fileExists "content/index-about.md")) }}
+    <section class="home-content post-content" style="position: relative; z-index: 10; max-width: 750px; margin: 4rem auto 14rem auto; padding: 0 1.5rem;">
+        {{ or .Content (readFile "index-about.md" | markdownify) }}
+    </section>
+{{ end }}
+
+<!-- 3. Styles & Animations -->
+<style>
+    /* Fixed Background Physics Canvas */
+    #physics-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.6; /* Adjust this to make it brighter/dimmer */
+    }
+
+    /* Section-by-section fade in / out */
+    .fade-in-item {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1), transform 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+    }
+
+    .fade-in-item.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Typewriter Cursor */
+    .typewriter-cursor {
+        display: inline-block;
+        margin-left: 2px;
+        color: #888;
+        font-weight: 300;
+        animation: blink 0.8s step-start infinite;
+    }
+
+    @keyframes blink {
+        50% { opacity: 0; }
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // --- 1. Kinematic Particle Network (Atoms/Constellations) ---
+        const canvas = document.getElementById("physics-canvas");
+        const ctx = canvas.getContext("2d");
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.6; // Velocity X
+                this.vy = (Math.random() - 0.5) * 0.6; // Velocity Y
+                this.radius = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                // Bounce off walls
+                if (this.x < 0 || this.x > width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > height) this.vy = -this.vy;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(150, 180, 220, 0.8)";
+                ctx.fill();
+            }
+        }
+
+        // Initialize Particles
+        for (let i = 0; i < 70; i++) {
+            particles.push(new Particle());
+        }
+
+        function animatePhysics() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                // Draw connecting lines if particles are close (Gravity/Bonds)
+                for (let j = i + 1; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 130) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(150, 180, 220, ${1 - distance / 130})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animatePhysics);
+        }
+        animatePhysics();
+
+        // --- 2. Typewriter Effect for Quote ---
+        const quoteEl = document.getElementById("typewriter-quote");
+        const cursorEl = document.querySelector(".typewriter-cursor");
+
+        if (quoteEl) {
+            const textToType = quoteEl.getAttribute("data-text") || "";
+            let charIndex = 0;
+            const typingSpeed = 35;
+
+            function typeCharacter() {
+                if (charIndex < textToType.length) {
+                    quoteEl.textContent += textToType.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeCharacter, typingSpeed);
+                } else {
+                    setTimeout(() => {
+                        if (cursorEl) cursorEl.style.display = "none";
+                    }, 2500);
+                }
+            }
+            setTimeout(typeCharacter, 450);
+        }
+
+        // --- 3. Section Fade In / Out on Scroll ---
+        const contentContainer = document.querySelector(".home-content");
+        if (!contentContainer) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                } else {
+                    entry.target.classList.remove("is-visible");
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        Array.from(contentContainer.children).forEach((el) => {
+            el.classList.add("fade-in-item");
+            observer.observe(el);
+        });
+    });
+</script>
+{{ end }}
