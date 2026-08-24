@@ -1,6 +1,6 @@
 {{ define "main" }}
-<!-- Physics Background Canvas -->
-<canvas id="physics-canvas"></canvas>
+<!-- Fluid Mechanics Background Canvas -->
+<canvas id="fluid-canvas"></canvas>
 
 <!-- 1. Full Screen Initial View -->
 <div style="position: relative; z-index: 10; min-height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 8vh; box-sizing: border-box;">
@@ -46,8 +46,8 @@
 
 <!-- 3. Styles & Animations -->
 <style>
-    /* Fixed Background Physics Canvas */
-    #physics-canvas {
+    /* Fixed Background Fluid Canvas */
+    #fluid-canvas {
         position: fixed;
         top: 0;
         left: 0;
@@ -55,7 +55,6 @@
         height: 100vh;
         z-index: 0;
         pointer-events: none;
-        opacity: 0.6; /* Adjust this to make it brighter/dimmer */
     }
 
     /* Section-by-section fade in / out */
@@ -87,11 +86,12 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // --- 1. Kinematic Particle Network (Atoms/Constellations) ---
-        const canvas = document.getElementById("physics-canvas");
+        // --- 1. Fluid Dynamics Streamline Simulation ---
+        const canvas = document.getElementById("fluid-canvas");
         const ctx = canvas.getContext("2d");
         let width, height;
         let particles = [];
+        const numParticles = 900; // Density of the fluid
 
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -100,60 +100,107 @@
         window.addEventListener("resize", resize);
         resize();
 
-        class Particle {
+        let mouse = { x: width / 2, y: height / 2, vx: 0, vy: 0, active: false };
+
+        window.addEventListener("mousemove", (e) => {
+            if (!mouse.active) {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            }
+            mouse.vx = e.clientX - mouse.x;
+            mouse.vy = e.clientY - mouse.y;
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            mouse.active = true;
+        });
+
+        window.addEventListener("mouseleave", () => {
+            mouse.active = false;
+        });
+
+        // Decay mouse velocity rapidly to simulate viscous resistance
+        setInterval(() => {
+            mouse.vx *= 0.5;
+            mouse.vy *= 0.5;
+        }, 50);
+
+        class FluidParticle {
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.6; // Velocity X
-                this.vy = (Math.random() - 0.5) * 0.6; // Velocity Y
-                this.radius = Math.random() * 1.5 + 0.5;
+                this.vx = 0;
+                this.vy = 0;
+                this.size = Math.random() * 1.5 + 0.5;
+                // Ambient laminar flow drifting to the right
+                this.baseSpeedX = (Math.random() - 0.5) * 0.2 + 0.3;
+                this.baseSpeedY = (Math.random() - 0.5) * 0.2;
             }
+
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                // Bounce off walls
-                if (this.x < 0 || this.x > width) this.vx = -this.vx;
-                if (this.y < 0 || this.y > height) this.vy = -this.vy;
+                if (mouse.active) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    // Fluid interaction radius (the wake)
+                    if (dist < 180 && dist > 1) {
+                        let force = (180 - dist) / 180;
+
+                        // Displacement (Bow wave - particles pushed away from cursor)
+                        this.vx -= (dx / dist) * force * 1.5;
+                        this.vy -= (dy / dist) * force * 1.5;
+
+                        // Viscous drag (Particles pulled along cursor's path)
+                        this.vx += mouse.vx * force * 0.08;
+                        this.vy += mouse.vy * force * 0.08;
+                    }
+                }
+
+                // Kinematic viscosity (Friction dampening)
+                this.vx *= 0.92;
+                this.vy *= 0.92;
+
+                // Apply velocities + ambient flow
+                this.x += this.vx + this.baseSpeedX;
+                this.y += this.vy + this.baseSpeedY;
+
+                // Continuous fluid loop (Wrap around screen edges)
+                if (this.x < -20) this.x = width + 20;
+                if (this.x > width + 20) this.x = -20;
+                if (this.y < -20) this.y = height + 20;
+                if (this.y > height + 20) this.y = -20;
             }
+
             draw() {
+                let speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = "rgba(150, 180, 220, 0.8)";
-                ctx.fill();
+                ctx.moveTo(this.x, this.y);
+                // Draw streamlines stretching based on velocity
+                ctx.lineTo(
+                    this.x - (this.vx + this.baseSpeedX) * 4,
+                    this.y - (this.vy + this.baseSpeedY) * 4
+                );
+                // Opacity increases as kinetic energy increases
+                ctx.strokeStyle = `rgba(130, 180, 240, ${0.15 + Math.min(speed * 0.15, 0.6)})`;
+                ctx.lineWidth = this.size;
+                ctx.lineCap = "round";
+                ctx.stroke();
             }
         }
 
-        // Initialize Particles
-        for (let i = 0; i < 70; i++) {
-            particles.push(new Particle());
+        for (let i = 0; i < numParticles; i++) {
+            particles.push(new FluidParticle());
         }
 
-        function animatePhysics() {
+        function animateFluid() {
             ctx.clearRect(0, 0, width, height);
-
             for (let i = 0; i < particles.length; i++) {
                 particles[i].update();
                 particles[i].draw();
-
-                // Draw connecting lines if particles are close (Gravity/Bonds)
-                for (let j = i + 1; j < particles.length; j++) {
-                    let dx = particles[i].x - particles[j].x;
-                    let dy = particles[i].y - particles[j].y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 130) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(150, 180, 220, ${1 - distance / 130})`;
-                        ctx.lineWidth = 0.6;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
             }
-            requestAnimationFrame(animatePhysics);
+            requestAnimationFrame(animateFluid);
         }
-        animatePhysics();
+        animateFluid();
 
         // --- 2. Typewriter Effect for Quote ---
         const quoteEl = document.getElementById("typewriter-quote");
