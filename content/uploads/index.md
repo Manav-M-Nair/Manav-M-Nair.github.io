@@ -6,7 +6,7 @@ Now you shall have access to it too...
 
 2. [Cick here for my notes on Thermodynamics](/files/Thermodynamics-notes(Aug28).pdf) that I am currently making as a renconcillation of whatever Prof. Vinesh Vijayan taught me in 2nd semester and whatever Dr. Deepshika Jaiswal-nagar is teaching me right now.
 
-3. [Click here for my notes on Geometric Optics](/files/Geometric_Optics.pdf) that I made during my Optics Lectures under Prof. Ravi Pant of IISER TVM
+3. [Click here for my notes on Geometric Optics](/files/Geometric_Optics.pdf) that I made during my Optics Lectures of third semester under Prof. Ravi Pant of IISER TVM
 
 4. [Click here for my notes on Laplace Transforms](/files/Laplace_Transforms.pdf) that I made during my Mathematical-Tools course under Dr. Dhanya Rajendran in my second semester.
 
