@@ -4,7 +4,7 @@ Now you shall have access to it too...
 
 1. [Click here for my learning material on Special Relativity](/files/Special_Relativity.pdf) that I made during the summer of 2026 as part of a reading project I did under Dr. Mathew Arun Thomas of IISER, Thiruvananthapuram. It started off as a mini-summary of what I did and what all I learnt. But I found both Special Relativity and the process of typing my understandings down so enjoyable that it turned out to be a 70 page book.
 
-2. [Cick here for my notes on Thermodynamics](/files/Thermodynamics-notes(Aug28).pdf) that I am currently making as a renconcillation of whatever Prof. Vinesh Vijayan taught me in 2nd semester and whatever Dr. Deepshika Jaiswal-nagar is teaching me right now.
+2. [Cick here for my notes on Thermodynamics](/files/Thermodynamics-4.pdf) that I am currently making as a renconcillation of whatever Prof. Vinesh Vijayan taught me in 2nd semester and whatever Dr. Deepshika Jaiswal-nagar is teaching me right now.
 
 3. [Click here for my notes on Geometric Optics](/files/Geometric_Optics.pdf) that I made during my Optics Lectures of third semester under Prof. Ravi Pant of IISER TVM
 
