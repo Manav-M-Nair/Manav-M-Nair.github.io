@@ -1,6 +1,7 @@
 ---
 title: "My Photography"
 type: "post"
+date : 2026
 description: "A collection of some amazing photos I've taken."
 draft: false
 ---
