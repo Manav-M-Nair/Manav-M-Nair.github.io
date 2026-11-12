@@ -14,7 +14,7 @@ Here are a few of my favorite shots:
 ![Cochin refinery](/images/Cochin_refinery.jpeg)
 
 ![my sister's eye](/images/sister_eye.jpeg)
-![first sem roomie](/images/aman.jpeg)
+![first sem roomie](/images/Aman.jpeg)
 ![A happy buddy](/images/pankaj.jpeg)
 ![Q-Park of IISER TVM](/images/Q_park.jpeg)
 ![The lighting was perfect](/images/IISER_logo.jpeg)
@@ -33,5 +33,8 @@ Here are a few of my favorite shots:
 ![Yes, you can get Milky-way shots from IISER TVM](/images/milkyway.jpeg)
 ![Fort Kochi evenings](/images/fort_kochi.jpeg)
 ![Eagle soars above the clouds](/images/eagle.jpeg)
-![Gateway of India](/images/gateway.jpeg)
+![Gateway of India](/images/Gateway.jpeg)
+![My cheek cells under a microscope](/imgages/cheek_cells.jpg)
+![A rainy diwali night](/images/diwali_night.jpeg)
+![sunrays in the backdrop of Indoor](/images/sunrays.jpeg)
 {{% /gallery %}}
